@@ -37,7 +37,7 @@ devtools::install_github("jjchern/zcta")
 
 # Usage
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(dplyr)
 library(zcta)
 
@@ -48,9 +48,10 @@ zcta_county_rel_10
 # devtools::install_github("larmarange/labelled")
 # devtools::install_github("jjchern/meda")
 meda::d(zcta_county_rel_10) 
+
 labelled::var_label(zcta_county_rel_10)
 
-# Total number of zcta
+# Total number of zcta records
 nrow(zcta_county_rel_10)
 
 # Number of distinct zcta
@@ -65,8 +66,8 @@ zcta_county_rel_10 %>%
   group_by(`Num of counties`) %>% 
   summarise(`Num of zctas` = n())
 
-# To get an one-to-one relationship between zcta and county, assign county to a zcta if the zcta has the most population
-# Example:
+# To get an one-to-one relationship between zcta and county, assign county to 
+# a zcta if the zcta has the most population. For Example:
 # Before: zcta 601 fall in county 72001 and 72141
 zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct)

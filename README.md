@@ -28,16 +28,6 @@ Usage
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> 
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> 
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(zcta)
 
 # Data
@@ -82,6 +72,7 @@ meda::d(zcta_county_rel_10)
 #> 10        zhu   int   int     FALSE 2010 Housing Unit Coun...
 #> ..        ...   ...   ...       ...                       ...
 #> Variables not shown: head (chr)
+
 labelled::var_label(zcta_county_rel_10)
 #> $zcta5
 #> [1] "2010 ZIP Code Tabulation Area"
@@ -155,7 +146,7 @@ labelled::var_label(zcta_county_rel_10)
 #> $coarealandpct
 #> [1] "The Percentage of Total Land Area of the 2010 County represented by the record"
 
-# Total number of zcta
+# Total number of zcta records
 nrow(zcta_county_rel_10)
 #> [1] 44410
 
@@ -182,8 +173,8 @@ zcta_county_rel_10 %>%
 #> 5               5           16
 #> 6               6            2
 
-# To get an one-to-one relationship between zcta and county, assign county to a zcta if the zcta has the most population
-# Example:
+# To get an one-to-one relationship between zcta and county, assign county to 
+# a zcta if the zcta has the most population. For Example:
 # Before: zcta 601 fall in county 72001 and 72141
 zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct)
