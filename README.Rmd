@@ -1,0 +1,80 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# About
+
+This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
+
+# Useful Links
+
+- [Data Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
+- [Explanation of the 2010 ZCTA to County Relationship File](http://www2.census.gov/geo/pdfs/maps-data/data/rel/explanation_zcta_county_rel_10.pdf)
+- [Census ZIP Code Tabulation Areas page](https://www.census.gov/geo/reference/zctas.html)
+- [ZIP Code Tabulation Areas (ZCTAs) Delineation Animation](https://www.census.gov/geo/reference/zcta/zcta_delin_anim.html)
+- [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
+- [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
+- [Census Frequently Asked Questions about ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+
+# Installation
+
+```r
+# install.packages("devtools")
+devtools::install_github("jjchern/zcta")
+```
+
+# Usage
+
+```{r}
+library(dplyr)
+library(zcta)
+
+# Data
+zcta_county_rel_10
+
+# Show variable labels, and whether value label exists for certain variables
+# devtools::install_github("larmarange/labelled")
+# devtools::install_github("jjchern/meda")
+meda::d(zcta_county_rel_10) 
+labelled::var_label(zcta_county_rel_10)
+
+# Total number of zcta
+nrow(zcta_county_rel_10)
+
+# Number of distinct zcta
+zcta_county_rel_10 %>% distinct(zcta5) %>% nrow()
+
+# In most instances the ZCTA code is the same as the ZIP Code for an area
+# But some zctas fall in more than one county 
+# For example, there're 7064 zctas fall in 2 counties
+zcta_county_rel_10 %>% 
+  group_by(zcta5) %>% 
+  summarise(`Num of counties` = n()) %>% 
+  group_by(`Num of counties`) %>% 
+  summarise(`Num of zctas` = n())
+
+# To get an one-to-one relationship between zcta and county, assign county to a zcta if the zcta has the most population
+# Example:
+# Before: zcta 601 fall in county 72001 and 72141
+zcta_county_rel_10 %>% 
+  select(zcta5, state, county, geoid, poppt, zpoppct)
+
+# After: relate zcta 601 only to county 72001 as it accounts for 99.43% of the population
+zcta_county_rel_10 %>% 
+  select(zcta5, state, county, geoid, poppt, zpoppct) %>% 
+  group_by(zcta5) %>% 
+  slice(which.max(zpoppct))
+```
+
