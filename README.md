@@ -9,7 +9,6 @@ This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA)
 Motivation
 ==========
 
-<<<<<<< HEAD
 Linking the USPS's ZIP codes to US counties is tedious:
 
 -   ZIP codes do not resemble spatial entities; they are created for delivering mails. ZIP codes also change over time.
@@ -19,9 +18,6 @@ Linking the USPS's ZIP codes to US counties is tedious:
     -   Census does not release an official crosswalk between ZIP codes and ZCTAs.
 
     -   Census does release relationship files between ZCTAs and counties, but at least 25% of the ZCTAs cannot be uniquely linked to counties.
-=======
-Linking the USPS's ZIP codes to US counties is tedious: - ZIP codes do not resemble spatial entities; they are created for delivering mails. ZIP codes also change over time. - To get a truly spatial representations of ZIP codes, the US Census Bureau develops the concept of ZIP Code tabulation areas (ZCTAs), which approximates ZIP codes. But - Census does not release an official crosswalk between ZIP codes and ZCTAs. - Census does release relationship files between ZCTAs and counties, but at least 25% of the ZCTAs cannot be uniquely linked to counties.
->>>>>>> 9f8f78c862f157bedba3894e7adf82f565a4a6b0
 
 A proposed solution: ZIP codes -\> ZCTAs -\> counties. This package contains data for connecting the second link. For connecting the first link, see [`zipzcta`](https://github.com/jjchern/zipzcta).
 
