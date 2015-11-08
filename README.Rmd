@@ -20,6 +20,20 @@ knitr::opts_chunk$set(
 
 This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
 
+# Motivation
+
+Linking the USPS's ZIP codes to US counties is tedious:
+
+- ZIP codes do not resemble spatial entities; they are created for delivering mails. ZIP codes also change over time.
+
+- To get a truly spatial representations of ZIP codes, the US Census Bureau develops the concept of ZIP Code tabulation areas (ZCTAs), which approximates ZIP codes. But
+
+    - Census does not release an official crosswalk between ZIP codes and ZCTAs.
+    
+    - Census does release relationship files between ZCTAs and counties, but at least 25% of the ZCTAs cannot be uniquely linked to counties.
+        
+A proposed solution: ZIP codes -> ZCTAs -> counties. This package contains data for connecting the second link. For connecting the first link, see [`zipzcta`](https://github.com/jjchern/zipzcta).
+
 # Useful Links
 
 - [Data Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
@@ -29,6 +43,9 @@ This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA)
 - [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
 - [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
 - [Census Frequently Asked Questions about ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+
+- [The ZIP Code Resources Page](http://mcdc.missouri.edu/allabout/zipcodes.html)
+- [All About ZIP Codes: 2010 Supplement](http://mcdc.missouri.edu/allabout/zipcodes_2010supplement.shtml)
 
 # Installation
 
