@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+[![Travis-CI Build Status](https://travis-ci.org/jjchern/zcta.svg?branch=master)](https://travis-ci.org/jjchern/zcta)
+
 # About
 
 This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
@@ -39,28 +41,24 @@ devtools::install_github("jjchern/zcta")
 
 ```{r, message=FALSE, warning=FALSE}
 library(dplyr)
-library(zcta)
 
 # Data
-zcta_county_rel_10
+zcta::zcta_county_rel_10
 
 # Show variable labels, and whether value label exists for certain variables
 # devtools::install_github("larmarange/labelled")
-# devtools::install_github("jjchern/meda")
-meda::d(zcta_county_rel_10) 
-
-labelled::var_label(zcta_county_rel_10)
+labelled::var_label(zcta::zcta_county_rel_10)
 
 # Total number of zcta records
-nrow(zcta_county_rel_10)
+nrow(zcta::zcta_county_rel_10)
 
 # Number of distinct zcta
-zcta_county_rel_10 %>% distinct(zcta5) %>% nrow()
+zcta::zcta_county_rel_10 %>% distinct(zcta5) %>% nrow()
 
 # In most instances the ZCTA code is the same as the ZIP Code for an area
 # But some zctas fall in more than one county 
 # For example, there're 7064 zctas fall in 2 counties
-zcta_county_rel_10 %>% 
+zcta::zcta_county_rel_10 %>% 
   group_by(zcta5) %>% 
   summarise(`Num of counties` = n()) %>% 
   group_by(`Num of counties`) %>% 
@@ -69,13 +67,38 @@ zcta_county_rel_10 %>%
 # To get an one-to-one relationship between zcta and county, assign county to 
 # a zcta if the zcta has the most population. For Example:
 # Before: zcta 601 fall in county 72001 and 72141
-zcta_county_rel_10 %>% 
+zcta::zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct)
 
 # After: relate zcta 601 only to county 72001 as it accounts for 99.43% of the population
-zcta_county_rel_10 %>% 
+one_to_one_pop = zcta::zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct) %>% 
   group_by(zcta5) %>% 
   slice(which.max(zpoppct))
+one_to_one_pop
+
+# Or assign county to a zcta if the zcta accounts for most of the area.
+one_to_one_area = zcta::zcta_county_rel_10 %>% 
+  select(zcta5, state, county, geoid, poppt, zpoppct, zareapct) %>% 
+  group_by(zcta5) %>% 
+  slice(which.max(zareapct))
+one_to_one_area
+
+# Merge the two 1 to 1 relationship datasets and identify zctas that have different county match
+one_to_one_pop %>% 
+  left_join(one_to_one_area, by = "zcta5") %>% 
+  select(zcta5, 
+         county.x, geoid.x, zpoppct.x, 
+         county.y, geoid.y, zpoppct.y) %>% 
+  mutate(diff = geoid.x - geoid.y) %>% 
+  filter(diff != 0)
+
+# Get county names for the 1 to 1 relationship dataset
+# Also keep just states and DC
+one_to_one_pop %>% 
+  left_join(gaze::county10, by = "geoid") %>% 
+  select(zcta5, state, usps, county, geoid, name) %>% 
+  filter(state <= 56) %>% 
+  group_by(state)
 ```
 
