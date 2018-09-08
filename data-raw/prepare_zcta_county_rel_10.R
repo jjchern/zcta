@@ -1,3 +1,6 @@
+
+library(tidyverse)
+
 # Download zcta_county_rel_10.txt -----------------------------------------
 # Download date: 2015-11-04
 
@@ -7,15 +10,9 @@ if (!file.exists(lcl)) download.file(src, lcl)
 
 # Ingest data -------------------------------------------------------------
 
-zcta_county_rel_10 = read.table(file = "data-raw/zcta_county_rel_10.txt",
-                                header = TRUE,
-                                sep = ",",
-                                stringsAsFactors = FALSE)
-
-# Minor tweaks: change variables names to lower cases, add tbl_df ---------
-
-names(zcta_county_rel_10) = tolower(names(zcta_county_rel_10))
-zcta_county_rel_10 = dplyr::tbl_df(zcta_county_rel_10)
+read_csv("data-raw/zcta_county_rel_10.txt") %>%
+  docxtractr::mcga() %>%
+  print() -> zcta_county_rel_10
 
 # Add variable labels
 # Source: https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html
@@ -53,5 +50,5 @@ labelled::var_label(zcta_county_rel_10) =
 devtools::use_data(zcta_county_rel_10, overwrite = TRUE)
 
 # Delete the raw file -----------------------------------------------------
-
-unlink(lcl)
+# unlink(lcl)
+# Or don't include the raw file in the github repo
