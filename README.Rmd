@@ -1,7 +1,7 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -57,7 +57,7 @@ devtools::install_github("jjchern/zcta")
 # Usage
 
 ```{r, message=FALSE, warning=FALSE}
-library(dplyr)
+library(tidyverse)
 
 # Data
 zcta::zcta_county_rel_10
@@ -74,7 +74,7 @@ zcta::zcta_county_rel_10 %>% distinct(zcta5) %>% nrow()
 
 # In most instances the ZCTA code is the same as the ZIP Code for an area
 # But some zctas fall in more than one county 
-# For example, there're 7064 zctas fall in 2 counties
+# For example, there're 7060 zctas fall in 2 counties
 zcta::zcta_county_rel_10 %>% 
   group_by(zcta5) %>% 
   summarise(`Num of counties` = n()) %>% 
@@ -113,9 +113,8 @@ one_to_one_pop %>%
 # Get county names for the 1 to 1 relationship dataset
 # Also keep just states and DC
 one_to_one_pop %>% 
-  left_join(gaze::county10, by = "geoid") %>% 
+  left_join(gaze::county10 %>% mutate(geoid = as.numeric(geoid)), by = "geoid") %>% 
   select(zcta5, state, usps, county, geoid, name) %>% 
   filter(state <= 56) %>% 
   group_by(state)
 ```
-

@@ -1,7 +1,7 @@
 Package: zcta
 Title: 2010 Census ZCTA Relationship File
 Version: 0.0.1
-Authors@R: 'JJ Chen <jiajia.chern@gmail.com> [aut, cre]'
+Authors@R: person("JJ", "Chen", email = "jiajia.chern@gmail.com", role = c("aut", "cre"))
 Description: Simple relationships between the 2010 ZCTAs and other Census entities.
 Depends:
     R (>= 3.2.2)

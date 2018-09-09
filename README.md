@@ -1,75 +1,98 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/jjchern/zcta.svg?branch=master)](https://travis-ci.org/jjchern/zcta)
 
-About
-=====
+[![Travis-CI Build
+Status](https://travis-ci.org/jjchern/zcta.svg?branch=master)](https://travis-ci.org/jjchern/zcta)
 
-This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
+# About
 
-Motivation
-==========
+This R data package intends to store 2010 Census ZIP Code Tabulation
+Area (ZCTA) Relationship files. So far in only includes the “2010 ZCTA
+to County Relationship File” (`zcta_county_rel_10.rda`).
 
-Linking the USPS's ZIP codes to US counties is tedious:
+# Motivation
 
--   ZIP codes do not resemble spatial entities; they are created for delivering mails. ZIP codes also change over time.
+Linking the USPS’s ZIP codes to US counties is tedious:
 
--   To get a truly spatial representations of ZIP codes, the US Census Bureau develops the concept of ZIP Code tabulation areas (ZCTAs), which approximates ZIP codes. But
+  - ZIP codes do not resemble spatial entities; they are created for
+    delivering mails. ZIP codes also change over time.
 
-    -   Census does not release an official crosswalk between ZIP codes and ZCTAs.
+  - To get a truly spatial representations of ZIP codes, the US Census
+    Bureau develops the concept of ZIP Code tabulation areas (ZCTAs),
+    which approximates ZIP codes. But
+    
+      - Census does not release an official crosswalk between ZIP codes
+        and ZCTAs.
+    
+      - Census does release relationship files between ZCTAs and
+        counties, but at least 25% of the ZCTAs cannot be uniquely
+        linked to counties.
 
-    -   Census does release relationship files between ZCTAs and counties, but at least 25% of the ZCTAs cannot be uniquely linked to counties.
+A proposed solution: ZIP codes -\> ZCTAs -\> counties. This package
+contains data for connecting the second link. For connecting the first
+link, see [`zipzcta`](https://github.com/jjchern/zipzcta).
 
-A proposed solution: ZIP codes -\> ZCTAs -\> counties. This package contains data for connecting the second link. For connecting the first link, see [`zipzcta`](https://github.com/jjchern/zipzcta).
+# Useful Links
 
-Useful Links
-============
+  - [Data
+    Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
 
--   [Data Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
--   [Explanation of the 2010 ZCTA to County Relationship File](http://www2.census.gov/geo/pdfs/maps-data/data/rel/explanation_zcta_county_rel_10.pdf)
--   [Census ZIP Code Tabulation Areas page](https://www.census.gov/geo/reference/zctas.html)
--   [ZIP Code Tabulation Areas (ZCTAs) Delineation Animation](https://www.census.gov/geo/reference/zcta/zcta_delin_anim.html)
--   [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
--   [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
--   [Census Frequently Asked Questions about ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+  - [Explanation of the 2010 ZCTA to County Relationship
+    File](http://www2.census.gov/geo/pdfs/maps-data/data/rel/explanation_zcta_county_rel_10.pdf)
 
--   [The ZIP Code Resources Page](http://mcdc.missouri.edu/allabout/zipcodes.html)
--   [All About ZIP Codes: 2010 Supplement](http://mcdc.missouri.edu/allabout/zipcodes_2010supplement.shtml)
+  - [Census ZIP Code Tabulation Areas
+    page](https://www.census.gov/geo/reference/zctas.html)
 
-Installation
-============
+  - [ZIP Code Tabulation Areas (ZCTAs) Delineation
+    Animation](https://www.census.gov/geo/reference/zcta/zcta_delin_anim.html)
+
+  - [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship
+    Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
+
+  - [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and
+    Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
+
+  - [Census Frequently Asked Questions about
+    ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+
+  - [The ZIP Code Resources
+    Page](http://mcdc.missouri.edu/allabout/zipcodes.html)
+
+  - [All About ZIP Codes: 2010
+    Supplement](http://mcdc.missouri.edu/allabout/zipcodes_2010supplement.shtml)
+
+# Installation
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("jjchern/zcta")
 ```
 
-Usage
-=====
+# Usage
 
 ``` r
-library(dplyr)
+library(tidyverse)
 
 # Data
 zcta::zcta_county_rel_10
-#> Source: local data frame [44,410 x 24]
-#> 
-#>    zcta5 state county geoid poppt  hupt    areapt arealandpt  zpop   zhu
-#>    (int) (int)  (int) (int) (int) (int)     (dbl)      (dbl) (int) (int)
-#> 1    601    72      1 72001 18465  7695 165132671  164333375 18570  7744
-#> 2    601    72    141 72141   105    49   2326414    2326414 18570  7744
-#> 3    602    72      3 72003 41520 18073  83734431   79288158 41520 18073
-#> 4    603    72      5 72005 54689 25653  82063867   81880442 54689 25653
-#> 5    606    72     93 72093  6276  2740  94864349   94851862  6615  2877
-#> 6    606    72    121 72121    89    38   6679806    6679806  6615  2877
-#> 7    606    72    153 72153   250    99   8048393    8048393  6615  2877
-#> 8    610    72      3 72003   160    62    237185     237185 29016 12618
-#> 9    610    72     11 72011 28856 12556  96956283   92784282 29016 12618
-#> 10   612    72     13 72013 66938 30961 183876062  174066899 67010 30992
-#> ..   ...   ...    ...   ...   ...   ...       ...        ...   ...   ...
-#> Variables not shown: zarea (dbl), zarealand (dbl), copop (int), cohu
-#>   (int), coarea (dbl), coarealand (dbl), zpoppct (dbl), zhupct (dbl),
-#>   zareapct (dbl), zarealandpct (dbl), copoppct (dbl), cohupct (dbl),
-#>   coareapct (dbl), coarealandpct (dbl)
+#> # A tibble: 44,410 x 24
+#>    zcta5 state county  geoid  poppt   hupt areapt arealandpt   zpop    zhu
+#>    <chr> <dbl> <chr>   <dbl>  <dbl>  <dbl>  <dbl>      <dbl>  <dbl>  <dbl>
+#>  1 00601   72. 001    72001. 18465.  7695. 1.65e8 164333375. 18570.  7744.
+#>  2 00601   72. 141    72141.   105.    49. 2.33e6   2326414. 18570.  7744.
+#>  3 00602   72. 003    72003. 41520. 18073. 8.37e7  79288158. 41520. 18073.
+#>  4 00603   72. 005    72005. 54689. 25653. 8.21e7  81880442. 54689. 25653.
+#>  5 00606   72. 093    72093.  6276.  2740. 9.49e7  94851862.  6615.  2877.
+#>  6 00606   72. 121    72121.    89.    38. 6.68e6   6679806.  6615.  2877.
+#>  7 00606   72. 153    72153.   250.    99. 8.05e6   8048393.  6615.  2877.
+#>  8 00610   72. 003    72003.   160.    62. 2.37e5    237185. 29016. 12618.
+#>  9 00610   72. 011    72011. 28856. 12556. 9.70e7  92784282. 29016. 12618.
+#> 10 00612   72. 013    72013. 66938. 30961. 1.84e8 174066899. 67010. 30992.
+#> # ... with 44,400 more rows, and 14 more variables: zarea <dbl>,
+#> #   zarealand <dbl>, copop <dbl>, cohu <dbl>, coarea <dbl>,
+#> #   coarealand <dbl>, zpoppct <dbl>, zhupct <dbl>, zareapct <dbl>,
+#> #   zarealandpct <dbl>, copoppct <dbl>, cohupct <dbl>, coareapct <dbl>,
+#> #   coarealandpct <dbl>
 
 # Show variable labels, and whether value label exists for certain variables
 # devtools::install_github("larmarange/labelled")
@@ -156,43 +179,41 @@ zcta::zcta_county_rel_10 %>% distinct(zcta5) %>% nrow()
 
 # In most instances the ZCTA code is the same as the ZIP Code for an area
 # But some zctas fall in more than one county 
-# For example, there're 7064 zctas fall in 2 counties
+# For example, there're 7060 zctas fall in 2 counties
 zcta::zcta_county_rel_10 %>% 
   group_by(zcta5) %>% 
   summarise(`Num of counties` = n()) %>% 
   group_by(`Num of counties`) %>% 
   summarise(`Num of zctas` = n())
-#> Source: local data frame [6 x 2]
-#> 
-#>   Num of counties Num of zctas
-#>             (int)        (int)
-#> 1               1        24084
-#> 2               2         7060
-#> 3               3         1718
-#> 4               4          240
-#> 5               5           16
-#> 6               6            2
+#> # A tibble: 6 x 2
+#>   `Num of counties` `Num of zctas`
+#>               <int>          <int>
+#> 1                 1          24084
+#> 2                 2           7060
+#> 3                 3           1718
+#> 4                 4            240
+#> 5                 5             16
+#> 6                 6              2
 
 # To get an one-to-one relationship between zcta and county, assign county to 
 # a zcta if the zcta has the most population. For Example:
 # Before: zcta 601 fall in county 72001 and 72141
 zcta::zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct)
-#> Source: local data frame [44,410 x 6]
-#> 
-#>    zcta5 state county geoid poppt zpoppct
-#>    (int) (int)  (int) (int) (int)   (dbl)
-#> 1    601    72      1 72001 18465   99.43
-#> 2    601    72    141 72141   105    0.57
-#> 3    602    72      3 72003 41520  100.00
-#> 4    603    72      5 72005 54689  100.00
-#> 5    606    72     93 72093  6276   94.88
-#> 6    606    72    121 72121    89    1.35
-#> 7    606    72    153 72153   250    3.78
-#> 8    610    72      3 72003   160    0.55
-#> 9    610    72     11 72011 28856   99.45
-#> 10   612    72     13 72013 66938   99.89
-#> ..   ...   ...    ...   ...   ...     ...
+#> # A tibble: 44,410 x 6
+#>    zcta5 state county  geoid  poppt zpoppct
+#>    <chr> <dbl> <chr>   <dbl>  <dbl>   <dbl>
+#>  1 00601   72. 001    72001. 18465.  99.4  
+#>  2 00601   72. 141    72141.   105.   0.570
+#>  3 00602   72. 003    72003. 41520. 100.   
+#>  4 00603   72. 005    72005. 54689. 100.   
+#>  5 00606   72. 093    72093.  6276.  94.9  
+#>  6 00606   72. 121    72121.    89.   1.35 
+#>  7 00606   72. 153    72153.   250.   3.78 
+#>  8 00610   72. 003    72003.   160.   0.550
+#>  9 00610   72. 011    72011. 28856.  99.4  
+#> 10 00612   72. 013    72013. 66938.  99.9  
+#> # ... with 44,400 more rows
 
 # After: relate zcta 601 only to county 72001 as it accounts for 99.43% of the population
 one_to_one_pop = zcta::zcta_county_rel_10 %>% 
@@ -200,22 +221,21 @@ one_to_one_pop = zcta::zcta_county_rel_10 %>%
   group_by(zcta5) %>% 
   slice(which.max(zpoppct))
 one_to_one_pop
-#> Source: local data frame [33,120 x 6]
-#> Groups: zcta5 [33120]
-#> 
-#>    zcta5 state county geoid poppt zpoppct
-#>    (int) (int)  (int) (int) (int)   (dbl)
-#> 1    601    72      1 72001 18465   99.43
-#> 2    602    72      3 72003 41520  100.00
-#> 3    603    72      5 72005 54689  100.00
-#> 4    606    72     93 72093  6276   94.88
-#> 5    610    72     11 72011 28856   99.45
-#> 6    612    72     13 72013 66938   99.89
-#> 7    616    72     13 72013 11017  100.00
-#> 8    617    72     17 72017 24457   99.43
-#> 9    622    72     23 72023  7853  100.00
-#> 10   623    72     23 72023 43061  100.00
-#> ..   ...   ...    ...   ...   ...     ...
+#> # A tibble: 33,120 x 6
+#> # Groups:   zcta5 [33,120]
+#>    zcta5 state county  geoid  poppt zpoppct
+#>    <chr> <dbl> <chr>   <dbl>  <dbl>   <dbl>
+#>  1 00601   72. 001    72001. 18465.    99.4
+#>  2 00602   72. 003    72003. 41520.   100. 
+#>  3 00603   72. 005    72005. 54689.   100. 
+#>  4 00606   72. 093    72093.  6276.    94.9
+#>  5 00610   72. 011    72011. 28856.    99.4
+#>  6 00612   72. 013    72013. 66938.    99.9
+#>  7 00616   72. 013    72013. 11017.   100. 
+#>  8 00617   72. 017    72017. 24457.    99.4
+#>  9 00622   72. 023    72023.  7853.   100. 
+#> 10 00623   72. 023    72023. 43061.   100. 
+#> # ... with 33,110 more rows
 
 # Or assign county to a zcta if the zcta accounts for most of the area.
 one_to_one_area = zcta::zcta_county_rel_10 %>% 
@@ -223,22 +243,21 @@ one_to_one_area = zcta::zcta_county_rel_10 %>%
   group_by(zcta5) %>% 
   slice(which.max(zareapct))
 one_to_one_area
-#> Source: local data frame [33,120 x 7]
-#> Groups: zcta5 [33120]
-#> 
-#>    zcta5 state county geoid poppt zpoppct zareapct
-#>    (int) (int)  (int) (int) (int)   (dbl)    (dbl)
-#> 1    601    72      1 72001 18465   99.43    98.61
-#> 2    602    72      3 72003 41520  100.00   100.00
-#> 3    603    72      5 72005 54689  100.00   100.00
-#> 4    606    72     93 72093  6276   94.88    86.56
-#> 5    610    72     11 72011 28856   99.45    99.76
-#> 6    612    72     13 72013 66938   99.89    99.44
-#> 7    616    72     13 72013 11017  100.00   100.00
-#> 8    617    72     17 72017 24457   99.43    99.65
-#> 9    622    72     23 72023  7853  100.00   100.00
-#> 10   623    72     23 72023 43061  100.00   100.00
-#> ..   ...   ...    ...   ...   ...     ...      ...
+#> # A tibble: 33,120 x 7
+#> # Groups:   zcta5 [33,120]
+#>    zcta5 state county  geoid  poppt zpoppct zareapct
+#>    <chr> <dbl> <chr>   <dbl>  <dbl>   <dbl>    <dbl>
+#>  1 00601   72. 001    72001. 18465.    99.4     98.6
+#>  2 00602   72. 003    72003. 41520.   100.     100. 
+#>  3 00603   72. 005    72005. 54689.   100.     100. 
+#>  4 00606   72. 093    72093.  6276.    94.9     86.6
+#>  5 00610   72. 011    72011. 28856.    99.4     99.8
+#>  6 00612   72. 013    72013. 66938.    99.9     99.4
+#>  7 00616   72. 013    72013. 11017.   100.     100. 
+#>  8 00617   72. 017    72017. 24457.    99.4     99.6
+#>  9 00622   72. 023    72023.  7853.   100.     100. 
+#> 10 00623   72. 023    72023. 43061.   100.     100. 
+#> # ... with 33,110 more rows
 
 # Merge the two 1 to 1 relationship datasets and identify zctas that have different county match
 one_to_one_pop %>% 
@@ -248,44 +267,42 @@ one_to_one_pop %>%
          county.y, geoid.y, zpoppct.y) %>% 
   mutate(diff = geoid.x - geoid.y) %>% 
   filter(diff != 0)
-#> Source: local data frame [922 x 8]
-#> Groups: zcta5 [922]
-#> 
-#>    zcta5 county.x geoid.x zpoppct.x county.y geoid.y zpoppct.y  diff
-#>    (int)    (int)   (int)     (dbl)    (int)   (int)     (dbl) (int)
-#> 1    934       61   72061     57.99       21   72021     42.01    40
-#> 2   2543        1   25001     96.38        7   25007      3.62    -6
-#> 3   3579        7   33007     77.66       17   23017     22.34  9990
-#> 4   4424       29   23029     71.57        3   23003     28.43    26
-#> 5   4429       19   23019     65.21        9   23009     34.79    10
-#> 6   4459       19   23019     88.87        3   23003     11.13    16
-#> 7   4462       19   23019     98.97       21   23021      1.03    -2
-#> 8   4942       25   23025     78.43       21   23021     21.57     4
-#> 9   5842       19   50019     61.30        5   50005     38.70    14
-#> 10  7747       25   34025     65.50       23   34023     34.50     2
-#> ..   ...      ...     ...       ...      ...     ...       ...   ...
+#> # A tibble: 922 x 8
+#> # Groups:   zcta5 [922]
+#>    zcta5 county.x geoid.x zpoppct.x county.y geoid.y zpoppct.y   diff
+#>    <chr> <chr>      <dbl>     <dbl> <chr>      <dbl>     <dbl>  <dbl>
+#>  1 00934 061       72061.      58.0 021       72021.     42.0     40.
+#>  2 02543 001       25001.      96.4 007       25007.      3.62    -6.
+#>  3 03579 007       33007.      77.7 017       23017.     22.3   9990.
+#>  4 04424 029       23029.      71.6 003       23003.     28.4     26.
+#>  5 04429 019       23019.      65.2 009       23009.     34.8     10.
+#>  6 04459 019       23019.      88.9 003       23003.     11.1     16.
+#>  7 04462 019       23019.      99.0 021       23021.      1.03    -2.
+#>  8 04942 025       23025.      78.4 021       23021.     21.6      4.
+#>  9 05842 019       50019.      61.3 005       50005.     38.7     14.
+#> 10 07747 025       34025.      65.5 023       34023.     34.5      2.
+#> # ... with 912 more rows
 
 # Get county names for the 1 to 1 relationship dataset
 # Also keep just states and DC
 one_to_one_pop %>% 
-  left_join(gaze::county10, by = "geoid") %>% 
+  left_join(gaze::county10 %>% mutate(geoid = as.numeric(geoid)), by = "geoid") %>% 
   select(zcta5, state, usps, county, geoid, name) %>% 
   filter(state <= 56) %>% 
   group_by(state)
-#> Source: local data frame [32,989 x 6]
-#> Groups: state [51]
-#> 
-#>    zcta5 state  usps county geoid             name
-#>    (int) (int) (chr)  (int) (int)            (chr)
-#> 1   1001    25    MA     13 25013   Hampden County
-#> 2   1002    25    MA     15 25015 Hampshire County
-#> 3   1003    25    MA     15 25015 Hampshire County
-#> 4   1005    25    MA     27 25027 Worcester County
-#> 5   1007    25    MA     15 25015 Hampshire County
-#> 6   1008    25    MA     13 25013   Hampden County
-#> 7   1009    25    MA     13 25013   Hampden County
-#> 8   1010    25    MA     13 25013   Hampden County
-#> 9   1011    25    MA     13 25013   Hampden County
-#> 10  1012    25    MA     15 25015 Hampshire County
-#> ..   ...   ...   ...    ...   ...              ...
+#> # A tibble: 32,989 x 6
+#> # Groups:   state [51]
+#>    zcta5 state usps  county  geoid name            
+#>    <chr> <dbl> <chr> <chr>   <dbl> <chr>           
+#>  1 01001   25. MA    013    25013. Hampden County  
+#>  2 01002   25. MA    015    25015. Hampshire County
+#>  3 01003   25. MA    015    25015. Hampshire County
+#>  4 01005   25. MA    027    25027. Worcester County
+#>  5 01007   25. MA    015    25015. Hampshire County
+#>  6 01008   25. MA    013    25013. Hampden County  
+#>  7 01009   25. MA    013    25013. Hampden County  
+#>  8 01010   25. MA    013    25013. Hampden County  
+#>  9 01011   25. MA    013    25013. Hampden County  
+#> 10 01012   25. MA    015    25015. Hampshire County
+#> # ... with 32,979 more rows
 ```
