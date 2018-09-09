@@ -1,6 +1,6 @@
 Package: zcta
 Title: 2010 Census ZCTA Relationship File
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 'JJ Chen <jiajia.chern@gmail.com> [aut, cre]'
 Description: Simple relationships between the 2010 ZCTAs and other Census entities.
 Depends:
@@ -9,4 +9,4 @@ License: CC0
 LazyData: true
 URL: https://github.com/jjchern/zcta
 BugReports: https://github.com/jjchern/zcta/issues
-RoxygenNote: 5.0.0.9000
+RoxygenNote: 6.0.1
