@@ -15,4 +15,3 @@ Census, "generalized areal representations of United States Postal Service (USPS
 Code service areas."
 }
 \keyword{datasets}
-
