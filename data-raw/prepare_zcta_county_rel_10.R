@@ -47,7 +47,7 @@ labelled::var_label(zcta_county_rel_10) =
 
 # Save the data frame -----------------------------------------------------
 
-devtools::use_data(zcta_county_rel_10, overwrite = TRUE)
+usethis::use_data(zcta_county_rel_10, overwrite = TRUE)
 
 # Delete the raw file -----------------------------------------------------
 # unlink(lcl)

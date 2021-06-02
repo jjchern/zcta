@@ -3,8 +3,4 @@
 \docType{package}
 \name{zcta}
 \alias{zcta}
-\alias{zcta-package}
 \title{zcta.}
-\description{
-zcta.
-}

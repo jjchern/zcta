@@ -4,7 +4,9 @@
 \name{zcta_county_rel_10}
 \alias{zcta_county_rel_10}
 \title{2010 ZCTA to County Relationship File}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 44410 rows and 24 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 44410 rows and 24 columns.
+}
 \usage{
 zcta_county_rel_10
 }
