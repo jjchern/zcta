@@ -18,7 +18,11 @@ knitr::opts_chunk$set(
 
 # About
 
-This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
+This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far it includes:
+
+- "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`)
+
+- "2010 ZCTA to Tract Relationship File" (`zcta_tract_rel_10.rda`)
 
 # Motivation
 
@@ -36,13 +40,10 @@ A proposed solution: ZIP codes -> ZCTAs -> counties. This package contains data 
 
 # Useful Links
 
-- [Data Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
+- [Data Source](https://www.census.gov/geographies/reference-files/time-series/geo/relationship-files.2010.html#par_textimage_674173622)
 - [Explanation of the 2010 ZCTA to County Relationship File](http://www2.census.gov/geo/pdfs/maps-data/data/rel/explanation_zcta_county_rel_10.pdf)
-- [Census ZIP Code Tabulation Areas page](https://www.census.gov/geo/reference/zctas.html)
-- [ZIP Code Tabulation Areas (ZCTAs) Delineation Animation](https://www.census.gov/geo/reference/zcta/zcta_delin_anim.html)
-- [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
-- [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
-- [Census Frequently Asked Questions about ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+- [Census ZIP Code Tabulation Areas page](https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html)
+- [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/programs-surveys/geography/technical-documentation/records-layout/2010-zcta-record-layout.html)
 
 - [The ZIP Code Resources Page](http://mcdc.missouri.edu/allabout/zipcodes.html)
 - [All About ZIP Codes: 2010 Supplement](http://mcdc.missouri.edu/allabout/zipcodes_2010supplement.shtml)
