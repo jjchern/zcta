@@ -18,7 +18,13 @@ knitr::opts_chunk$set(
 
 # About
 
-This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far in only includes the "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`).
+This R data package intends to store 2010 Census ZIP Code Tabulation Area (ZCTA) Relationship files. So far it includes:
+
+- official US Census "2010 ZCTA to County Relationship File" (`zcta_county_rel_10.rda`)
+
+- official US Census "2010 ZCTA to Tract Relationship File" (`zcta_tract_rel_10.rda`)
+
+- ZIP Code to ZCTA crosswalk table developed by John Snow, Inc. (`zipzcta.rda`)
 
 # Motivation
 
@@ -32,17 +38,16 @@ Linking the USPS's ZIP codes to US counties is tedious:
     
     - Census does release relationship files between ZCTAs and counties, but at least 25% of the ZCTAs cannot be uniquely linked to counties.
         
-A proposed solution: ZIP codes -> ZCTAs -> counties. This package contains data for connecting the second link. For connecting the first link, see [`zipzcta`](https://github.com/jjchern/zipzcta).
+A proposed solution: ZIP codes -> ZCTAs -> counties. This package contains data for connecting these links using official US Census relationship files and ZIP-to-ZCTA crosswalk files created by John Snow, Inc.
 
 # Useful Links
 
-- [Data Source](https://www.census.gov/geo/maps-data/data/zcta_rel_download.html)
+- [Census File Data Source](https://www.census.gov/geographies/reference-files/time-series/geo/relationship-files.2010.html#par_textimage_674173622)
 - [Explanation of the 2010 ZCTA to County Relationship File](http://www2.census.gov/geo/pdfs/maps-data/data/rel/explanation_zcta_county_rel_10.pdf)
-- [Census ZIP Code Tabulation Areas page](https://www.census.gov/geo/reference/zctas.html)
-- [ZIP Code Tabulation Areas (ZCTAs) Delineation Animation](https://www.census.gov/geo/reference/zcta/zcta_delin_anim.html)
-- [Overview of the 2010 ZIP Code Tabulation Area (ZCTA) Relationship Files](https://www.census.gov/geo/maps-data/data/zcta_rel_overview.html)
-- [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/geo/maps-data/data/zcta_rel_layout.html)
-- [Census Frequently Asked Questions about ZCTAs](https://ask.census.gov/faq.php?id=5000&rtopic=1795&rsubtopic=8048)
+- [Census ZIP Code Tabulation Areas page](https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html)
+- [2010 ZIP Code Tabulation Area (ZCTA) Relationship File Layouts and Contents](https://www.census.gov/programs-surveys/geography/technical-documentation/records-layout/2010-zcta-record-layout.html)
+
+- [UDS Mapper](https://udsmapper.org/) hosts the ZCTA-ZIP crosswalk file, which should be able to link ZIP codes to 2010 Census ZCTAs. Newer crosswalks are also available from UDS Mapper.
 
 - [The ZIP Code Resources Page](http://mcdc.missouri.edu/allabout/zipcodes.html)
 - [All About ZIP Codes: 2010 Supplement](http://mcdc.missouri.edu/allabout/zipcodes_2010supplement.shtml)
@@ -57,10 +62,15 @@ devtools::install_github("jjchern/zcta")
 # Usage
 
 ```{r, message=FALSE, warning=FALSE}
+# devtools::install_github("jjchern/gaze")
+
 library(tidyverse)
 
-# Data
+# ZCTA to counties
 zcta::zcta_county_rel_10
+
+# ZIP codes to ZCTAs 
+zcta::zipzcta 
 
 # Show variable labels, and whether value label exists for certain variables
 # devtools::install_github("larmarange/labelled")
@@ -88,18 +98,27 @@ zcta::zcta_county_rel_10 %>%
   select(zcta5, state, county, geoid, poppt, zpoppct)
 
 # After: relate zcta 601 only to county 72001 as it accounts for 99.43% of the population
-one_to_one_pop = zcta::zcta_county_rel_10 %>% 
+one_to_one_pop <- zcta::zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct) %>% 
   group_by(zcta5) %>% 
-  slice(which.max(zpoppct))
+  slice(which.max(zpoppct)) %>% 
+  ungroup()
 one_to_one_pop
 
 # Or assign county to a zcta if the zcta accounts for most of the area.
-one_to_one_area = zcta::zcta_county_rel_10 %>% 
+one_to_one_area <- zcta::zcta_county_rel_10 %>% 
   select(zcta5, state, county, geoid, poppt, zpoppct, zareapct) %>% 
   group_by(zcta5) %>% 
-  slice(which.max(zareapct))
+  slice(which.max(zareapct)) %>% 
+  ungroup()
 one_to_one_area
+
+# Using either of these ZCTA-to-county tables, you can go from ZIP codes to ZCTAs to county
+zipcounty <- zcta::zipzcta %>% 
+  left_join(one_to_one_area, by = c("zcta" = "zcta5")) %>% 
+  select(zip, zcta, state = state.x, countygeoid = geoid) %>% 
+  arrange(zip)
+zipcounty
 
 # Merge the two 1 to 1 relationship datasets and identify zctas that have different county match
 one_to_one_pop %>% 
@@ -115,6 +134,5 @@ one_to_one_pop %>%
 one_to_one_pop %>% 
   left_join(gaze::county10 %>% mutate(geoid = as.numeric(geoid)), by = "geoid") %>% 
   select(zcta5, state, usps, county, geoid, name) %>% 
-  filter(state <= 56) %>% 
-  group_by(state)
+  filter(state <= 56)
 ```
