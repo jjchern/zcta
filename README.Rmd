@@ -126,13 +126,13 @@ one_to_one_pop %>%
   select(zcta5, 
          county.x, geoid.x, zpoppct.x, 
          county.y, geoid.y, zpoppct.y) %>% 
-  mutate(diff = geoid.x - geoid.y) %>% 
-  filter(diff != 0)
+  filter(geoid.x != geoid.y)
 
 # Get county names for the 1 to 1 relationship dataset
 # Also keep just states and DC
 one_to_one_pop %>% 
-  left_join(gaze::county10 %>% mutate(geoid = as.numeric(geoid)), by = "geoid") %>% 
+  mutate(geoid = as.integer(geoid)) %>% 
+  left_join(gaze::county10, by = "geoid") %>% 
   select(zcta5, state, usps, county, geoid, name) %>% 
   filter(state <= 56)
 ```
